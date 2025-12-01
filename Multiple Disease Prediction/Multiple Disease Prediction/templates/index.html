@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disease Prediction</title>
+    <style>
+        * {
+            border-radius: 7px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .menu-bar {
+            background-color: #222222;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-radius: 0px;
+        }
+
+        .menu-bar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-bar .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .menu-bar .menu-items {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-bar .menu-items a {
+            color: #ffffff;
+            margin: 0 10px;
+            padding: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .menu-bar .menu-items a:hover {
+            background-color: #8cb0b0;
+        }
+
+        .home {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-box {
+            background-color: rgb(240, 214, 236);
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 5px 5px 10px #cccccc;
+        }
+
+        .info-box h2 {
+            margin: 0 0 10px;
+        }
+
+        .info-box p {
+            margin: 10px;
+            padding: 10px;
+            text-align: justify;
+        }
+
+        .choice {
+            background-color: rgb(240, 214, 236);
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 5px 5px 10px #cccccc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .choice div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .choice button {
+            margin: 10px;
+            height: 70px;
+            width: 300px;
+            border-radius: 8px;
+            font-size: large;
+        }
+
+        .about {
+            margin-left: 10px;
+            width: 100%;
+            display: none;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+
+        .tit {
+            margin: 30px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            background-color: rgb(240, 214, 236);
+            box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+        }
+
+        .tit div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .tit h2 {
+            width: 300px;
+            text-align: left;
+        }
+
+        .mems {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .mem {
+            text-align: center;
+            box-shadow: rgb(58, 114, 138) 0px 2px 4px 0px, rgba(73, 132, 157, 0.32) 0px 2px 16px 0px;
+            background-color: rgb(240, 214, 236);
+            align-items: center;
+            margin: 10px;
+            padding: 20px;
+        }
+
+
+        .diabetes {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgb(240, 214, 236);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #384859;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #384859;
+        }
+
+        .heart {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgb(240, 214, 236);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+        }
+
+        .symdis {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgb(240, 214, 236);
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: none;
+            flex-direction: column;
+        }
+
+        .input-group {
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        option {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-bar">
+        <div class="logo">
+            <img onclick="home()" src="{{ url_for('static', filename='Health.jpg') }}" alt="Logo">
+        </div>
+        <div class="menu-items">
+            <a onclick="home()">Home</a>
+            <a onclick="about()">About</a>
+        </div>
+    </div>
+    <div class="home">
+        <div class="info-box">
+            <h2>Diseases and Health Care</h2>
+            <p>Health care is the maintenance or improvement of health via the prevention, diagnosis, treatment,
+                recovery, or cure of diseases, illnesses, injuries, and other physical and mental impairments in people.
+                It is a field of activity whose primary purpose is to promote, maintain, or restore health through the
+                services offered by its practitioners or organizations.</p>
+            <p>There are many different diseases and health conditions that can affect people, from common colds and flu
+                to more serious conditions such as cancer, heart disease, and diabetes. It is important to take care of
+                your health and seek medical attention when needed. Preventive care, such as regular check-ups and
+                screenings, can also help identify potential health issues early on and improve outcomes.</p>
+        </div>
+        <div class="choice">
+            <h1>Select a Prediction Type: </h1>
+            <div>
+                <button onclick="showDiabetesPrediction()">Diabetes Prediction</button>
+                <button onclick="showHeartDiseasePrediction()">Heart Disease Prediction</button>
+                <button onclick="sympred()">Symptom Based Disease Prediction</button>
+            </div>
+        </div>
+    </div>
+    <div class="about">
+        <div class="head">
+            <marquee behavior="water" direction="">
+                <h2>Hack Odyssey'24</h2>
+            </marquee>
+        </div>
+        <div class="tit">
+            <div>
+                <h2>Team Name:</h2>
+                <p>Odyssey Squad</p>
+            </div>
+            <div>
+                <h2>Theme:</h2>
+                <p>HealthCare</p>
+            </div>
+            <div>
+                <h2>Problem Statement Title:</h2>
+                <p>AI Disease Prediction Platform</p>
+            </div>
+            <div>
+                <h2>Description:</h2>
+                <p>A cutting-edge AI disease prediction platform offers quick and accurate diagnoses by analyzing
+                    medical scans or symptoms provided by users. <br> Using advanced machine learning,it aims to enable
+                    early intervention and informed decision-making for better patient outcomes.</p>
+            </div>
+            <div>
+                <h2>College Name:</h2>
+                <p>Kalasalingam Academy of Research and Education</p>
+            </div>
+        </div>
+        <div class="tede">
+            <h2>Team Details</h2>
+            <div class="mems">
+                <div class="mem">
+                    <h3>K Lokesh</h3>
+                    <p>4360</p>
+                    <p>Third Year</p>
+                    <p>Bachelor of Engineering</p>
+                    <p>Computer Science and Engineering</p>
+                </div>
+                <div class="mem">
+                    <h3>Y Ravi Theja Reddy</h3>
+                    <p>2770</p>
+                    <p>Third Year</p>
+                    <p>Bachelor of Engineering</p>
+                    <p>Computer Science and Engineering</p>
+                </div>
+                <div class="mem">
+                    <h3>B Aravind Kumar</h3>
+                    <p>2750</p>
+                    <p>Third Year</p>
+                    <p>Bachelor of Engineering</p>
+                    <p>Computer Science and Engineering</p>
+                </div>
+                <div class="mem">
+                    <h3>D Durga Prasad Reddy</h3>
+                    <p>2777</p>
+                    <p>Third Year</p>
+                    <p>Bachelor of Engineering</p>
+                    <p>Computer Science and Engineering</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diabetes Prediction Section -->
+    <div class="diabetes">
+        <h2>Diabetes Prediction</h2>
+        <form action="/diabetes_predict" method="post">
+            <label for="pregnancies">Pregnancies:</label>
+            <input type="number" id="pregnancies" name="pregnancies" required>
+
+            <label for="glucose">Glucose:</label>
+            <input type="number" id="glucose" name="glucose" required>
+
+            <label for="bloodPressure">Blood Pressure:</label>
+            <input type="number" id="bloodPressure" name="bloodPressure" required>
+
+            <label for="skinThickness">Skin Thickness:</label>
+            <input type="number" id="skinThickness" name="skinThickness" required>
+
+            <label for="insulin">Insulin:</label>
+            <input type="number" id="insulin" name="insulin" required>
+
+            <label for="bmi">BMI:</label>
+            <input type="number" id="bmi" name="bmi" required>
+
+            <label for="diabetesPedigreeFunction">Diabetes Pedigree Function:</label>
+            <input type="number" id="diabetesPedigreeFunction" name="diabetesPedigreeFunction" step="0.01" required>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <!-- Heart Disease Prediction Section -->
+    <div class="heart">
+        <h2>Heart Disease Prediction</h2>
+        <form action="/heart_predict" method="post">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex" required>
+                <option value="0">Female</option>
+                <option value="1">Male</option>
+            </select>
+
+            <label for="cp">Chest Pain Type:</label>
+            <input type="number" id="cp" name="cp" required>
+
+            <label for="chol">Cholesterol:</label>
+            <input type="number" id="chol" name="chol" required>
+
+            <label for="fbs">Fasting Blood Sugar:</label>
+            <input type="number" id="fbs" name="fbs" required>
+
+            <label for="thalach">Max Heart Rate:</label>
+            <input type="number" id="thalach" name="thalach" required>
+
+            <label for="exang">Exercise-Induced Angina:</label>
+            <input type="number" id="exang" name="exang" required>
+
+            <label for="oldpeak">Oldpeak:</label>
+            <input type="number" id="oldpeak" name="oldpeak" required>
+
+            <label for="slope">Slope:</label>
+            <input type="number" id="slope" name="slope" required>
+
+            <label for="thal">Thal:</label>
+            <input type="number" id="thal" name="thal" required>
+
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <!-- Symptom Based Prediction Section -->
+    <div class="symdis">
+        <h1>Symptom Based Disease Prediction</h1>
+        <form id="symptomForm" action="/predict_disease" method="post">
+            <label for="symptomCount">Select the number of symptoms:</label>
+            <select id="symptomCount" name="symptomCount">
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+            </select>
+            <div id="symptomInputs"></div>
+            <input type="submit" value="Predict">
+        </form>
+    </div>
+
+    <script>
+        function showDiabetesPrediction() {
+            document.querySelector('.home').style.display = 'none';
+            document.querySelector('.diabetes').style.display = 'flex';
+            document.querySelector('.heart').style.display = 'none';
+            document.querySelector('.about').style.display = 'none';
+            document.querySelector('.symdis').style.display = 'none';
+        }
+
+        function showHeartDiseasePrediction() {
+            document.querySelector('.home').style.display = 'none';
+            document.querySelector('.diabetes').style.display = 'none';
+            document.querySelector('.heart').style.display = 'flex';
+            document.querySelector('.about').style.display = 'none';
+            document.querySelector('.symdis').style.display = 'none';
+        }
+
+        function about() {
+            document.querySelector('.home').style.display = 'none';
+            document.querySelector('.diabetes').style.display = 'none';
+            document.querySelector('.heart').style.display = 'none';
+            document.querySelector('.about').style.display = 'flex';
+            document.querySelector('.symdis').style.display = 'none';
+        }
+
+        function home() {
+            document.querySelector('.home').style.display = 'flex';
+            document.querySelector('.diabetes').style.display = 'none';
+            document.querySelector('.heart').style.display = 'none';
+            document.querySelector('.about').style.display = 'none';
+            document.querySelector('.symdis').style.display = 'none';
+        }
+
+        function sympred() {
+            document.querySelector('.home').style.display = 'none';
+            document.querySelector('.diabetes').style.display = 'none';
+            document.querySelector('.heart').style.display = 'none';
+            document.querySelector('.about').style.display = 'none';
+            document.querySelector('.symdis').style.display = 'flex';
+        }
+    </script>
+
+    <script>
+        function addSymptomInputs() {
+            var symptomCount = document.getElementById("symptomCount").value;
+            var symptomInputs = document.getElementById("symptomInputs");
+            symptomInputs.innerHTML = "";  // Clear previous inputs
+            for (var i = 0; i < symptomCount; i++) {
+                var inputGroup = document.createElement("div");
+                inputGroup.className = "input-group";
+                var label = document.createElement("label");
+                label.textContent = "Symptom " + (i + 1) + ":";
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "symptom" + (i + 1);
+                inputGroup.appendChild(label);
+                inputGroup.appendChild(input);
+                symptomInputs.appendChild(inputGroup);
+            }
+        }
+
+        addSymptomInputs();
+
+        document.getElementById("symptomCount").addEventListener("change", addSymptomInputs);
+    </script>
+</body>
+
+</html>
